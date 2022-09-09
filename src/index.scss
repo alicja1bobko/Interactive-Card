@@ -7,14 +7,6 @@
   padding: 0;
 }
 
-// :root {
-//   $red-input-errors: hsl(0, 100%, 66%);
-//   $active-input-border: linear-gradient(hsl(249, 99%, 64%), hsl(278, 94%, 30%));
-//   $light-grayish-violet: hsl(270, 3%, 87%);
-//   $dark-grayish-violet: hsl(279, 6%, 55%);
-//   $dark-violet: hsl(278, 68%, 11%);
-// }
-
 .App {
   display: flex;
   min-height: 100vh;
@@ -46,7 +38,7 @@ body {
 }
 .card-hero {
   width: 100%;
-  padding: 2rem;
+  // padding: 1rem;
 }
 #card-back {
   background-image: url(../src/assets/images/bg-card-back.png);
@@ -112,5 +104,56 @@ body {
   font-weight: 500;
 }
 
+@media (min-width: 750px) {
+  .App {
+    flex-direction: row;
+  }
+  .App::after {
+    height: 100vh;
+    width: 35%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+        transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  }
+
+  .card-hero {
+    height: 100vh;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #card-front {
+    width: 28rem;
+    position: relative;
+    top: 0;
+  }
+
+  #card-back {
+    position: relative;
+    width: 28rem;
+    margin: 0 2rem 0rem auto;
+  }
+
+  
+
+  .card-form {
+    width: 45%;
+  }
+}
+
+
+
 @media (min-width: 1440px) {
+
+
+#card-front, #card-back{
+  transform: scale(0.95);
+  }
+
+
+
 }
