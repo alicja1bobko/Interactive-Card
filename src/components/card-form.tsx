@@ -1,12 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback } from "react";
 import creditCardType, { getTypeInfo, types as type } from "credit-card-type";
 import valid from "card-validator"; //import statement
-import {
-  useForm,
-  SubmitHandler,
-  appendErrors,
-  Resolver,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import "./card-form.scss";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,12 +15,12 @@ interface FormInput {
   cvc: number;
 }
 
-const validationSchema = yup.object({
+const validationSchema = yup.object().shape({
   nameSurname: yup
     .string()
     .required("Name is required")
     .min(5, "Name is too short")
-    .matches(/^[a-z ,.'-]+$/, "Incorrect format"),
+    .matches(/^[A-Z]{1}[a-z]+[ ]{1}[A-Z]{1}[a-z]+$/, "Incorrect format"),
   cardNumber: yup
     .string()
     .required("Number is required")
@@ -56,40 +52,8 @@ const validationSchema = yup.object({
     .required("Can't be blank")
     .test("test-cvv", "Is not valid", (value) => valid.cvv(value).isValid),
 });
-// const useYupValidationResolver: Resolver<FormInput> = (validationSchema) => {
-//   useCallback(
-//     async (data) => {
-//       try {
-//         const values = await validationSchema.validate(data, {
-//           abortEarly: false,
-//         });
-
-//         return {
-//           values,
-//           errors: {},
-//         };
-//       } catch (errors) {
-//         return {
-//           values: {},
-//           errors: errors.inner.reduce(
-//             (allErrors, currentError) => ({
-//               ...allErrors,
-//               [currentError.path]: {
-//                 type: currentError.type ?? "validation",
-//                 message: currentError.message,
-//               },
-//             }),
-//             {}
-//           ),
-//         };
-//       }
-//     },
-//     [validationSchema]
-//   );
-// };
 
 export const CardForm = () => {
-  // const resolver = useYupValidationResolver(validationSchema);
   const {
     register,
     handleSubmit,
@@ -194,9 +158,9 @@ export const CardForm = () => {
             </p>
           )}
         </div>
+        <div id="mmyy-cvc-errors"></div>
       </div>
       <button type="submit">Confirm</button>
-      {/* <input type="submit" /> */}
     </form>
   );
 };
