@@ -1,6 +1,15 @@
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useCallback } from "react";
+import creditCardType, { getTypeInfo, types as type } from "credit-card-type";
+import valid from "card-validator"; //import statement
+import {
+  useForm,
+  SubmitHandler,
+  appendErrors,
+  Resolver,
+} from "react-hook-form";
 import "./card-form.scss";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface FormInput {
   nameSurname: string;
@@ -10,36 +19,125 @@ interface FormInput {
   cvc: number;
 }
 
+const validationSchema = yup.object({
+  nameSurname: yup
+    .string()
+    .required("Name is required")
+    .min(5, "Name is too short")
+    .matches(/^[a-z ,.'-]+$/, "Incorrect format"),
+  cardNumber: yup
+    .string()
+    .required("Number is required")
+    .matches(/(\d{4}[\s|-]?\d{4}[\s|-]?\d{4}[\s|-]?\d{4})/, "Incorrect format")
+    .test("test-number", "Is valid", (value) => {
+      var numberValidation = valid.number(value);
+      var cardType = numberValidation.card?.niceType;
+      var cvcLength = numberValidation.card?.code.size;
+      return valid.number(value).isValid;
+    }),
+  month: yup
+    .string()
+    .required("Can't be blank")
+    .test(
+      "test-month",
+      "Is not valid",
+      (value) => valid.expirationMonth(value).isValid
+    ),
+  year: yup
+    .string()
+    .required("Can't be blank")
+    .test(
+      "test-year",
+      "Is not valid",
+      (value) => valid.expirationYear(value).isValid
+    ),
+  cvc: yup
+    .string()
+    .required("Can't be blank")
+    .test("test-cvv", "Is not valid", (value) => valid.cvv(value).isValid),
+});
+// const useYupValidationResolver: Resolver<FormInput> = (validationSchema) => {
+//   useCallback(
+//     async (data) => {
+//       try {
+//         const values = await validationSchema.validate(data, {
+//           abortEarly: false,
+//         });
+
+//         return {
+//           values,
+//           errors: {},
+//         };
+//       } catch (errors) {
+//         return {
+//           values: {},
+//           errors: errors.inner.reduce(
+//             (allErrors, currentError) => ({
+//               ...allErrors,
+//               [currentError.path]: {
+//                 type: currentError.type ?? "validation",
+//                 message: currentError.message,
+//               },
+//             }),
+//             {}
+//           ),
+//         };
+//       }
+//     },
+//     [validationSchema]
+//   );
+// };
+
 export const CardForm = () => {
-  const { register, handleSubmit } = useForm<FormInput>();
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  // const resolver = useYupValidationResolver(validationSchema);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInput>({
+    resolver: yupResolver(validationSchema),
+  });
+  const onSubmit = handleSubmit((data) => {
+    alert(JSON.stringify(data));
+  });
 
   return (
-    <form className="card-form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="card-form" onSubmit={onSubmit}>
       <div>
         <label htmlFor="name">Cardholder name</label>
         <div className="wrapper--rounded">
           <input
+            type="text"
+            id="nameSurname"
+            aria-required="true"
+            aria-invalid={errors.nameSurname ? "true" : "false"}
             placeholder="e.g. Jane Appleseed"
-            {...register("nameSurname", {
-              pattern: /^[a-z ,.'-]+$/,
-              required: true,
-            })}
+            {...register("nameSurname")}
           />
         </div>
+        {errors.nameSurname && (
+          <p className="input--error" role="alert">
+            {errors.nameSurname.message}
+          </p>
+        )}
       </div>
       <div>
         <label htmlFor="card-number">card number</label>
         <div className="wrapper--rounded">
           <input
             type="text"
+            id="cardNumber"
+            aria-required="true"
+            aria-invalid={errors.cardNumber ? "true" : "false"}
             placeholder="e.g. 1234 5678 9123 0000"
-            {...register("cardNumber", {
-              pattern: /(\d{4}[\s|-]?\d{4}[\s|-]?\d{4}[\s|-]?\d{4})/,
-              required: true,
-            })}
+            {...register("cardNumber")}
           />
         </div>
+        {errors.cardNumber && (
+          <p className="input--error" role="alert">
+            {errors.cardNumber.message}
+          </p>
+        )}
       </div>
       <div id="mmyy-cvc">
         <div id="mmyy-cvc-labels">
@@ -49,31 +147,52 @@ export const CardForm = () => {
         <div id="mmyy-cvc-inputs">
           <div className="wrapper--rounded">
             <input
+              id="month"
+              aria-required="true"
+              aria-invalid={errors.month ? "true" : "false"}
               placeholder="MM"
               className="mm-yy"
               type="number"
-              {...register("month", { min: 1, max: 12, required: true })}
+              {...register("month")}
             />
           </div>
+          {errors.month && (
+            <p className="input--error" role="alert">
+              {errors.month.message}
+            </p>
+          )}
           <div className="wrapper--rounded">
             <input
+              id="year"
+              aria-required="true"
+              aria-invalid={errors.year ? "true" : "false"}
               placeholder="YY"
               className="mm-yy"
               type="number"
-              {...register("year", {
-                min: new Date().getFullYear(),
-                required: true,
-              })}
+              {...register("year")}
             />
+            {errors.year && (
+              <p className="input--error" role="alert">
+                {errors.year.message}
+              </p>
+            )}
           </div>
           <div className="wrapper--rounded">
             <input
+              id="cvc"
+              aria-required="true"
+              aria-invalid={errors.cvc ? "true" : "false"}
               placeholder="e.g. 012"
               className="cvc"
-              type="number"
-              {...register("cvc", { pattern: /\d{3}/, required: true })}
+              type="text"
+              {...register("cvc")}
             />
           </div>
+          {errors.cvc && (
+            <p className="input--error" role="alert">
+              {errors.cvc.message}
+            </p>
+          )}
         </div>
       </div>
       <button type="submit">Confirm</button>
