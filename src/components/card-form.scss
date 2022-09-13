@@ -77,9 +77,21 @@ input:focus {
 #mmyy-cvc-errors{
    display: grid;
   grid-template-columns: 1fr 1fr 2fr;
+  grid-template-areas: "month year cvc";
   gap: 10px;
 }
 
+#month-error{
+grid-area: month;
+}
+
+#year-error{
+  grid-area: year;
+}
+
+#cvc-error{
+  grid-area: cvc;
+}
 
 button {
   font-family: inherit;
