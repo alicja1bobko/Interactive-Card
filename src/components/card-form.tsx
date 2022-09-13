@@ -6,8 +6,8 @@ import { FormInput } from "../interface/schema/form-input";
 import { validationSchema } from "../interface/schema/validation-schema";
 
 interface FormProps {
-  onSubmit: React.FormEventHandler;
-  // handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // onSubmit: React.FormEventHandler;
+  handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // const handleSubmit = (e: React.FormEvent<CardFormElements>) => {
@@ -26,7 +26,7 @@ interface FormProps {
 //   readonly elements: FormElements;
 // }
 
-export const CardForm = () => {
+export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
   const {
     register,
     handleSubmit,
@@ -38,6 +38,16 @@ export const CardForm = () => {
   const onSubmit = handleSubmit((data) => {
     // alert(JSON.stringify(data));
   });
+
+  const handleErrorAnimation = () => {
+    if (document.querySelectorAll(".input--error").length !== 0) {
+      const submitBtn = document.querySelector(".submit-btn");
+      submitBtn?.classList.add("shake");
+      submitBtn?.addEventListener("animationend", () =>
+        submitBtn?.classList.remove("shake")
+      );
+    }
+  };
 
   return (
     <form className="card-form" onSubmit={onSubmit}>
@@ -52,7 +62,7 @@ export const CardForm = () => {
             aria-invalid={errors.nameSurname ? "true" : "false"}
             placeholder="e.g. Jane Appleseed"
             {...register("nameSurname")}
-            // onChange={handleInput}
+            onChange={handleInput}
           />
         </div>
         {errors.nameSurname && (
@@ -72,7 +82,7 @@ export const CardForm = () => {
             aria-invalid={errors.cardNumber ? "true" : "false"}
             placeholder="e.g. 1234 5678 9123 0000"
             {...register("cardNumber")}
-            // onChange={handleInput}
+            onChange={handleInput}
           />
         </div>
         {errors.cardNumber && (
@@ -97,7 +107,7 @@ export const CardForm = () => {
               className="mm-yy"
               type="number"
               {...register("month")}
-              // onChange={handleInput}
+              onChange={handleInput}
             />
           </div>
           {/* Expiration Year */}
@@ -110,7 +120,7 @@ export const CardForm = () => {
               className="mm-yy"
               type="number"
               {...register("year")}
-              // onChange={handleInput}
+              onChange={handleInput}
             />
           </div>
           {/* CVC Field */}
@@ -123,7 +133,7 @@ export const CardForm = () => {
               className="cvc"
               type="text"
               {...register("cvc")}
-              // onChange={handleInput}
+              onChange={handleInput}
             />
           </div>
         </div>
@@ -145,7 +155,13 @@ export const CardForm = () => {
           )}
         </div>
       </div>
-      <button type="submit">Confirm</button>
+      <button
+        type="submit"
+        className="submit-btn"
+        onClick={handleErrorAnimation}
+      >
+        Confirm
+      </button>
     </form>
   );
 };
