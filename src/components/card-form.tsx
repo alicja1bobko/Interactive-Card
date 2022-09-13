@@ -39,7 +39,8 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
     // alert(JSON.stringify(data));
   });
 
-  const handleErrorAnimation = () => {
+  const handleErrorDisplay = () => {
+    // button animation
     if (document.querySelectorAll(".input--error").length !== 0) {
       const submitBtn = document.querySelector(".submit-btn");
       submitBtn?.classList.add("shake");
@@ -58,6 +59,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
           <input
             type="text"
             id="nameSurname"
+            className={errors.nameSurname ? "invalid--input-outline" : ""}
             aria-required="true"
             aria-invalid={errors.nameSurname ? "true" : "false"}
             placeholder="e.g. Jane Appleseed"
@@ -78,6 +80,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
           <input
             type="text"
             id="cardNumber"
+            className={errors.cardNumber ? "invalid--input-outline" : ""}
             aria-required="true"
             aria-invalid={errors.cardNumber ? "true" : "false"}
             placeholder="e.g. 1234 5678 9123 0000"
@@ -104,7 +107,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
               aria-required="true"
               aria-invalid={errors.month ? "true" : "false"}
               placeholder="MM"
-              className="mm-yy"
+              className={errors.month ? "invalid--input-outline" : ""}
               type="number"
               {...register("month")}
               onChange={handleInput}
@@ -117,7 +120,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
               aria-required="true"
               aria-invalid={errors.year ? "true" : "false"}
               placeholder="YY"
-              className="mm-yy"
+              className={errors.year ? "invalid--input-outline" : ""}
               type="number"
               {...register("year")}
               onChange={handleInput}
@@ -130,7 +133,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
               aria-required="true"
               aria-invalid={errors.cvc ? "true" : "false"}
               placeholder="e.g. 012"
-              className="cvc"
+              className={errors.cvc ? "invalid--input-outline" : ""}
               type="text"
               {...register("cvc")}
               onChange={handleInput}
@@ -155,11 +158,7 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
           )}
         </div>
       </div>
-      <button
-        type="submit"
-        className="submit-btn"
-        onClick={handleErrorAnimation}
-      >
+      <button type="submit" className="submit-btn" onClick={handleErrorDisplay}>
         Confirm
       </button>
     </form>

@@ -53,6 +53,10 @@ input:focus {
   // display: inline-block;
 }
 
+.invalid--input-outline{
+  border: 1px solid v.$red-input-errors;
+}
+
 ::placeholder {
   opacity: 0.6;
 }
