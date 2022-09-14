@@ -1,6 +1,7 @@
 import "./card-form.scss";
 import "./thank-you.scss";
 import iconComplete from "../assets/images/icon-complete.svg";
+
 type Props = {
   resetForm: () => void;
 };

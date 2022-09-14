@@ -47,6 +47,7 @@ const App: React.FunctionComponent = () => {
     });
     backgroundAnimation(false);
   };
+
   const backgroundAnimation = (validate: boolean): void => {
     let axis;
     window.matchMedia("(max-width: 750px)").matches
@@ -56,7 +57,6 @@ const App: React.FunctionComponent = () => {
       "card"
     )[0] as HTMLElement;
     card!.style.transform = `translate${axis}(50${axis === "Y" ? "vh" : "vw"})`;
-
     const bcg = document.querySelector(".App");
     bcg!.classList.add("bcg-slider");
     setTimeout(() => {
