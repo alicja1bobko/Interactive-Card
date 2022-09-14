@@ -23,7 +23,7 @@ Users should be able to:
  - If there are no errors, display the completed state
  - Reset the form when the user clicks "Continue" on the completed state
 
-### Screenshot
+### Screenshots
 
 ![](./src/screenshots/mobile.png)
 ![](./src/screenshots/desktop.png)
