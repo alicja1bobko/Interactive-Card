@@ -1,0 +1,21 @@
+@use "../assets/variables/variables" as v;
+.thank-you-page{
+    text-align: center;
+    align-items: center;
+}
+
+.thank-you-page img {
+    max-width: 5rem;
+    
+}
+#thank-you-heading{
+    padding-top: 2rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 1.7em;
+}
+
+p{
+    padding: 1rem 0 2rem;
+    color: v.$dark-grayish-violet;
+}

@@ -1,6 +1,6 @@
 @use "../assets/variables/variables" as v;
 
-.card-form {
+.card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -50,8 +50,13 @@ input:focus {
   color: v.$red-input-errors;
   font-size: 13px;
   margin-top:  0.5rem;
-  // transition: all 0.5s ease-in-out;
-  // display: inline-block;
+  padding: 0;
+  height:17px;
+  transition: height 0.3s ease-in-out;
+}
+
+.hidden{
+  height: 0 !important;
 }
 
 .invalid--input-outline{
@@ -106,6 +111,7 @@ button {
   padding: 0.8rem;
   border-radius: v.$border-radius;
   border: none;
+  width: 100%;
 }
 
 button:hover{
