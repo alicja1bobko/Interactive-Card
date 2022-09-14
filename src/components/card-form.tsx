@@ -6,25 +6,8 @@ import { FormInput } from "../interface/schema/form-input";
 import { validationSchema } from "../interface/schema/validation-schema";
 
 interface FormProps {
-  // onSubmit: React.FormEventHandler;
   handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
-// const handleSubmit = (e: React.FormEvent<CardFormElements>) => {
-//   e.preventDefault();
-// };
-
-// interface FormElements extends HTMLFormControlsCollection {
-//   nameSurname: HTMLInputElement;
-//   cardNumber: HTMLInputElement;
-//   month: HTMLInputElement;
-//   year: HTMLInputElement;
-//   cvc: HTMLInputElement;
-// }
-
-// interface CardFormElements extends HTMLFormElement {
-//   readonly elements: FormElements;
-// }
 
 export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
   const {
@@ -35,8 +18,28 @@ export const CardForm: React.FC<FormProps> = ({ handleInput }) => {
     resolver: yupResolver(validationSchema),
   });
 
+  const backgroundAnimation = () => {
+    let axis;
+    window.matchMedia("(max-width: 750px)").matches
+      ? (axis = "Y")
+      : (axis = "X");
+    let form: HTMLElement = document.getElementsByClassName(
+      "card-form"
+    )[0] as HTMLElement;
+    form!.style.transform = `translate${axis}(50${axis === "Y" ? "vh" : "vw"})`;
+
+    const bcg = document.querySelector(".App");
+    bcg!.classList.add("bcg-slider");
+    setTimeout(() => {
+      // setValidate(validate);
+      bcg!.classList.remove("bcg-slider");
+      form!.style.transform = "translate(0)";
+    }, 500);
+  };
+
   const onSubmit = handleSubmit((data) => {
     // alert(JSON.stringify(data));
+    backgroundAnimation();
   });
 
   const handleErrorDisplay = () => {

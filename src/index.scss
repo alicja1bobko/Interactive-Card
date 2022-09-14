@@ -29,6 +29,11 @@
   position: absolute;
   top: 0;
   z-index: -1;
+  transition: width 0.35s ease-in-out, height 0.35s ease-in-out;
+}
+
+.bcg-slider::after {
+	height:100% ; //css hack to select pseudoelement 
 }
 
 body {
@@ -49,4 +54,8 @@ body {
     z-index: -1;
     transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   }
+
+	.bcg-slider::after {
+		width: 100% !important;
+	}
 }

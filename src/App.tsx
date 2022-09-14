@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Hero } from "./components/hero";
 import { CardForm } from "./components/card-form";
 import { FormInput } from "./interface/schema/form-input";
-import { type } from "os";
+
 
 function App() {
   const [formData, setFormData] = useState<FormInput>({
